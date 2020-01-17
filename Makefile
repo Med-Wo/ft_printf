@@ -6,7 +6,7 @@
 #    By: mravily <mravily@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/12 13:51:23 by mravily           #+#    #+#              #
-#    Updated: 2019/12/22 15:05:47 by mravily          ###   ########.fr        #
+#    Updated: 2020/01/17 17:45:41 by mravily          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC =	$(foreach dir, $(SRC_DIR), $(foreach file, $(wildcard $(dir)/*.c), $(notdi
 OBJ = 	$(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 #Compilation flag
-CFLAGS =
+CFLAGS = -Wall -Wextra -Werror
 
 #Include flag
 IFLAGS = $(foreach dir, $(INC_DIR), -I$(dir))
@@ -56,12 +56,6 @@ show:
 				@echo "IFLAGS :\n$(IFLAGS)"
 				@echo "LFLAGS :\n$(LFLAGS)"
 
-install:
-				make -C libs/libft
-
-re-install:
-				make -C libs/libft re
-
 $(OBJ_DIR)/%.o : %.c
 				@echo "Compiling $(_YELLOW)$@$(_WHITE) ... \c"
 				@mkdir -p $(OBJ_DIR)
@@ -74,10 +68,11 @@ $(NAME):		$(OBJ) Makefile
 				@ranlib $(NAME)
 				@echo "$(_RED)DONE\n$(_YELLOW)-----"
 
-exec:			install $(NAME)
+exec:			$(NAME)
 				@echo "Compiling the $(_YELLOW)executable$(_WHITE) ... \c"
-				@$(CC) srcs/main.c $(NAME) $(CFLAGS) $(IFLAGS) $(LFLAGS) && ./a.out
+				@$(CC) main.c $(NAME) $(CFLAGS) $(IFLAGS) $(LFLAGS)
 				@echo "$(_GREEN)DONE$(_WHITE)"
+				./a.out
 
 re:				fclean all
 
