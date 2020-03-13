@@ -6,14 +6,14 @@
 /*   By: mravily <mravily@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 18:29:23 by mravily           #+#    #+#             */
-/*   Updated: 2020/01/17 17:17:40 by mravily          ###   ########.fr       */
+/*   Updated: 2020/01/18 13:43:23 by mravily          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-extern char *buffer_return;
-extern int fd_return;
+extern char		*g_buffer_return;
+extern int		g_fd_return;
 
 t_buffer	create_buffer(int max_size)
 {
@@ -57,7 +57,7 @@ void		add_str(t_buffer *print, char *str)
 
 void		add_char(t_buffer *print, char c)
 {
-	if (buffer_return == NULL)
+	if (g_buffer_return == NULL)
 	{
 		if (print->len >= print->max_size - 1)
 			print_text(print);
@@ -65,7 +65,7 @@ void		add_char(t_buffer *print, char c)
 	}
 	else
 	{
-		buffer_return[print->len] = c;
+		g_buffer_return[print->len] = c;
 	}
 	print->len++;
 	print->total_len++;
@@ -73,9 +73,9 @@ void		add_char(t_buffer *print, char c)
 
 void		print_text(t_buffer *print)
 {
-	if (buffer_return == NULL)
-		write(fd_return, print->to_print, print->len);
+	if (g_buffer_return == NULL)
+		write(g_fd_return, print->to_print, print->len);
 	else
-		buffer_return[print->len] = '\0';
+		g_buffer_return[print->len] = '\0';
 	print->len = 0;
 }

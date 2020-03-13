@@ -6,7 +6,7 @@
 /*   By: mravily <mravily@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 18:35:49 by mravily           #+#    #+#             */
-/*   Updated: 2020/01/14 15:36:10 by mravily          ###   ########.fr       */
+/*   Updated: 2020/01/19 17:49:57 by mravily          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,7 @@ static void		add_padding_str(char **result, t_flag *flag, int len_arg)
 	char	*to_add;
 
 	to_add = NULL;
-	if (flag->point == true)
-	{
-		if (flag->point == true && flag->len_precision == -1)
-			flag->len_precision = 0;
-		if (len_arg <= flag->len_padding)
-		{
-			to_add = ft_strnew_c(flag->len_padding - len_arg, ' ');
-			if (flag->padding_direction == left)
-				ft_str_add_suffix(result, to_add);
-			else
-				ft_str_add_prefixe(to_add, result);
-		}
-	}
-	else if (len_arg < flag->len_padding)
+	if (len_arg < flag->len_padding)
 	{
 		to_add = ft_strnew_c(flag->len_padding - len_arg, ' ');
 		if (flag->padding_direction == left)
@@ -73,9 +60,9 @@ void			converter_str(t_flag *flag, t_buffer *buffer)
 	int		len_arg;
 
 	result = NULL;
-	arg = va_arg(*(flag->arg), char *);
 	if (flag->point == true && flag->len_precision == -1)
 		flag->len_precision = 0;
+	arg = va_arg(*(flag->arg), char *);
 	result = check_arg(result, flag, arg);
 	len_arg = ft_strlen(result);
 	add_padding_str(&result, flag, len_arg);

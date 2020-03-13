@@ -6,7 +6,7 @@
 /*   By: mravily <mravily@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 15:36:45 by mravily           #+#    #+#             */
-/*   Updated: 2020/01/15 19:40:18 by mravily          ###   ########.fr       */
+/*   Updated: 2020/01/19 22:46:43 by mravily          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void			add_padding_digit(char **result, t_flag *flag, int len_arg);
 void			converter_digit(t_flag *flag, t_buffer *buffer);
 void			converter_str(t_flag *flag, t_buffer *buffer);
 void			converter_c(t_flag *flag, t_buffer *buffer);
+void			converter_percent(t_flag *flag, t_buffer *buffer);
 char			*ft_print_addr(void *ptr, char *base);
 char			*ft_convert_value_to_base(char *base, t_flag *flag);
 void			handle_x_converter(t_flag *flag, t_buffer *buffer);
@@ -109,6 +110,7 @@ t_flag *flag);
 void			resize_arg(t_flag *flag);
 
 int				ft_printf(const char *format, ...);
+size_t			parse_flag(const char *format, size_t index, t_flag *flag);
 int				ft_sprintf(char *buffer, const char *format, ...);
 int				ft_fprintf(int fd, const char *format, ...);
 

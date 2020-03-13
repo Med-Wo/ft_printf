@@ -6,32 +6,14 @@
 /*   By: mravily <mravily@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 16:24:13 by mravily           #+#    #+#             */
-/*   Updated: 2020/01/17 16:36:28 by mravily          ###   ########.fr       */
+/*   Updated: 2020/01/19 23:15:41 by mravily          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-char	*buffer_return;
-int		fd_return;
-
-size_t		parse_flag(const char *format, size_t index, t_flag *flag)
-{
-	static t_flag_funct funct_flag_ptr[255] = {NULL};
-	size_t				flag_len;
-
-	if (funct_flag_ptr[0] == NULL)
-		set_funct_flag_tab(funct_flag_ptr);
-	flag_len = 0;
-	index++;
-	while (ft_strcmp_c(".-0123456789*hl", format[index + flag_len]) == true)
-	{
-		flag_len += funct_flag_ptr[(int)format[index +
-		flag_len]]((char *)format, index + flag_len, flag);
-	}
-	flag->converter = format[index + flag_len];
-	return (flag_len + 1);
-}
+char	*g_buffer_return;
+int		g_fd_return;
 
 static void	get_place(const char *format, size_t index, size_t flag_len,
 t_buffer *buffer)
@@ -58,7 +40,6 @@ void		parse_convert(const char *format, t_buffer *buffer, t_flag flag)
 		if (format[index] == '%')
 		{
 			flag_len = parse_flag(format, index, &flag);
-			//print_flag(flag);
 			c = flag.converter;
 			if (funct_convert_ptr[(int)c] != NULL)
 				funct_convert_ptr[(int)c](&flag, buffer);
@@ -79,11 +60,11 @@ int			ft_printf(const char *format, ...)
 	va_list			arg;
 	t_flag			flag;
 
-	buffer_return = NULL;
-	fd_return = 1;
+	g_buffer_return = NULL;
+	g_fd_return = 1;
 	va_start(arg, format);
 	flag = create_t_flag(&arg);
-	buffer = create_buffer(10);
+	buffer = create_buffer(400);
 	parse_convert(format, &buffer, flag);
 	va_end(arg);
 	print_text(&buffer);
@@ -96,11 +77,11 @@ int			ft_sprintf(char *entry_buffer, const char *format, ...)
 	va_list			arg;
 	t_flag			flag;
 
-	buffer_return = entry_buffer;
-	fd_return = 1;
+	g_buffer_return = entry_buffer;
+	g_fd_return = 1;
 	va_start(arg, format);
 	flag = create_t_flag(&arg);
-	buffer = create_buffer(10);
+	buffer = create_buffer(400);
 	parse_convert(format, &buffer, flag);
 	va_end(arg);
 	print_text(&buffer);
@@ -113,11 +94,11 @@ int			ft_fprintf(int fd, const char *format, ...)
 	va_list			arg;
 	t_flag			flag;
 
-	buffer_return = NULL;
-	fd_return = fd;
+	g_buffer_return = NULL;
+	g_fd_return = fd;
 	va_start(arg, format);
 	flag = create_t_flag(&arg);
-	buffer = create_buffer(10);
+	buffer = create_buffer(400);
 	parse_convert(format, &buffer, flag);
 	va_end(arg);
 	print_text(&buffer);
